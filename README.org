@@ -1,0 +1,90 @@
+👉 [[https://github.com/sponsors/xenodium][Support this work via GitHub Sponsors]]
+
+* sqlite-mode-extras
+
+An experimental package to extend Emacs 29's sqlite-mode.
+
+⚠️ Experimental package ⚠️
+
+I've received enough requests to put this on MELPA from folks that have found the package stable and helpful.
+
+Having said that, I want to be upfront that I haven't tested the code thoroughly, so please use at own risk (please back up your database).
+
+* Recommended bindings and installation
+
+Once the package is on MELPA, you'll be able to install via:
+
+#+begin_src emacs-lisp :lexical no
+  (use-package sqlite-mode-extras
+    :bind (:map
+           sqlite-mode-map
+           ("n" . next-line)
+           ("p" . previous-line)
+           ("b" . sqlite-mode-extras-backtab-dwim)
+           ("f" . sqlite-mode-extras-tab-dwim)
+           ("+" . sqlite-mode-extras-add-row)
+           ("D" . sqlite-mode-extras-delete-row-dwim)
+           ("C" . sqlite-mode-extras-compose-and-execute)
+           ("E" . sqlite-mode-extras-execute)
+           ("S" . sqlite-mode-extras-execute-and-display-select-query)
+           ("DEL" . sqlite-mode-extras-delete-row-dwim)
+           ("g" . sqlite-mode-extras-refresh)
+           ("<backtab>" . sqlite-mode-extras-backtab-dwim)
+           ("<tab>" . sqlite-mode-extras-tab-dwim)
+           ("RET" . sqlite-mode-extras-ret-dwim)))
+#+end_src
+
+* What kind of extras?
+
+- =sqlite-mode-extras-tab-dwim=: Tab navigation.
+
+#+ATTR_HTML: :width 75%
+[[file:images/sqlite-forward.gif]]
+
+#+ATTR_HTML: :width 75%
+[[file:images/sqlite-previous.gif]]
+
+- =sqlite-mode-extras-ret-dwim=: Edit field.
+
+#+ATTR_HTML: :width 90%
+[[file:images/sqlite-edits.gif]]
+
+- =sqlite-mode-extras-compose-and-execute=: Compose and execute a query.
+#+ATTR_HTML: :width 90%
+[[file:images/compose-execute.gif]]
+- =sqlite-mode-extras-execute=: Execute a query.
+#+ATTR_HTML: :width 90%
+[[file:images-extensions/execute.gif]]
+- =sqlite-mode-extras-add-row=: Add row to table at point.
+#+ATTR_HTML: :width 90%
+[[file:images/add-row.gif]]
+- =sqlite-mode-extras-delete-row-dwim=: Similar to =sqlite-mode-delete= but also enables deleting range in region.
+#+ATTR_HTML: :width 90%
+[[file:images/delete-rows.gif]]
+- =sqlite-mode-extras-refresh=: Refreshes the buffer re-querying the database.
+- =sqlite-mode-extras-ret-dwim=: If on table, toggle expansion. If on row, edit it.
+- =sqlite-mode-extras-execute-and-display-select-query=: Executes a query and displays results.
+#+ATTR_HTML: :width 90%
+[[file:images/select-earth.gif]]
+
+I've been playing with the following key bindings:
+
+#+begin_src emacs-lisp :lexical no
+  (use-package sqlite-mode-extras
+    :bind (:map
+           sqlite-mode-map
+           ("n" . next-line)
+           ("p" . previous-line)
+           ("b" . sqlite-mode-extras-backtab-dwim)
+           ("f" . sqlite-mode-extras-tab-dwim)
+           ("+" . sqlite-mode-extras-add-row)
+           ("D" . sqlite-mode-extras-delete-row-dwim)
+           ("C" . sqlite-mode-extras-compose-and-execute)
+           ("E" . sqlite-mode-extras-execute)
+           ("S" . sqlite-mode-extras-execute-and-display-select-query)
+           ("DEL" . sqlite-mode-extras-delete-row-dwim)
+           ("g" . sqlite-mode-extras-refresh)
+           ("<backtab>" . sqlite-mode-extras-backtab-dwim)
+           ("<tab>" . sqlite-mode-extras-tab-dwim)
+           ("RET" . sqlite-mode-extras-ret-dwim)))
+#+end_src
