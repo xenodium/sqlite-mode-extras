@@ -50,20 +50,25 @@ Once the package is on MELPA, you'll be able to install via:
 [[file:images/sqlite-edits.gif]]
 
 - =sqlite-mode-extras-compose-and-execute=: Compose and execute a query.
+
 #+ATTR_HTML: :width 90%
 [[file:images/compose-execute.gif]]
 - =sqlite-mode-extras-execute=: Execute a query.
+
 #+ATTR_HTML: :width 90%
-[[file:images-extensions/execute.gif]]
+[[file:images/execute.gif]]
 - =sqlite-mode-extras-add-row=: Add row to table at point.
+
 #+ATTR_HTML: :width 90%
 [[file:images/add-row.gif]]
 - =sqlite-mode-extras-delete-row-dwim=: Similar to =sqlite-mode-delete= but also enables deleting range in region.
+
 #+ATTR_HTML: :width 90%
 [[file:images/delete-rows.gif]]
 - =sqlite-mode-extras-refresh=: Refreshes the buffer re-querying the database.
 - =sqlite-mode-extras-ret-dwim=: If on table, toggle expansion. If on row, edit it.
 - =sqlite-mode-extras-execute-and-display-select-query=: Executes a query and displays results.
+
 #+ATTR_HTML: :width 90%
 [[file:images/select-earth.gif]]
 
