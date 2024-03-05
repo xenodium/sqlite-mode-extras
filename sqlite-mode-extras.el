@@ -33,6 +33,7 @@
 ;;; Code:
 
 (require 'sqlite-mode)
+(require 'view)
 
 (defun sqlite-mode-extras-execute ()
   "Execute a query."
