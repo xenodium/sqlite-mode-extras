@@ -1,13 +1,18 @@
-;;; sqlite-mode-extras.el --- Extensions for sqlite-mode. -*- lexical-binding: t; -*-
+;;; sqlite-mode-extras.el --- Extensions for sqlite-mode -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2024 Alvaro Ramirez
 
 ;; Author: Alvaro Ramirez https://xenodium.com
+;; URL: https://github.com/xenodium/sqlite-mode-extras
 ;; Version: 0.7
+;; Package-Requires: ((emacs "29.1"))
 
 ;;; Commentary:
 ;; Helper additions for `sqlite-mode'.
 
+;; Warning: While I've received plenty of requests to release as a
+;; package, please note I still consider this package experimental.
+;; Please back up your databases when using this package.
 
 ;; Suggested key bindings:
 ;;
