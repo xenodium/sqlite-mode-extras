@@ -146,7 +146,7 @@
     (sqlite-execute
      sqlite--db
      (format "UPDATE %s SET %s = ? WHERE rowid = ?"
-             (cdr table)
+             (sqlite-mode-extras--assert-table-name (cdr table))
              column)
      (list value (car row)))
     (sqlite-mode-extras-refresh)))
@@ -177,12 +177,22 @@
                                (sqlite-mode-extras--table-header-line))))
            (unless (string-equal (car (seq-first columns)) "id")
              (error "First row must be 'id'"))
-           (unless (yes-or-no-p (format "Delete from '%s' rowid = %s?" (cdr table) rowids))
+           (unless (yes-or-no-p (format "Delete from '%s' rowid = %s?"
+                                        (sqlite-mode-extras--assert-table-name (cdr table))
+                                        rowids))
              (user-error "Aborted"))
            (sqlite-execute
             sqlite--db
-            (format "DELETE FROM  %s WHERE rowid IN (%s);" (cdr table) rowids))
+            (format "DELETE FROM  %s WHERE rowid IN (%s);"
+                    (sqlite-mode-extras--assert-table-name (cdr table))
+                    rowids))
            (sqlite-mode-extras-refresh)))))
+
+(defun sqlite-mode-extras--assert-table-name (name)
+  "Check if NAME is a valid SQLite table name and fail otherwise."
+  (if (string-match-p "^[a-zA-Z_][a-zA-Z0-9_]*$" name)
+      name
+    (error "\"%s\" is not a valid table name" name)))
 
 (defun sqlite-mode-extras--point-at-last-column-p ()
   "Return t if point is on a table's last column."
