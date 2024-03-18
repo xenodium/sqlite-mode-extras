@@ -556,5 +556,30 @@ Set INSERT-AT-POINT to insert all results at point (instead of (point-max))"
         (push (string-trim (match-string 0)) matches))
       (reverse matches))))
 
+(defvar-keymap sqlite-extras-minor-mode-map
+  :doc "Keymap for `sqlite-extras-minor-mode'."
+  "n" #'next-line
+  "p" #'previous-line
+  "b" #'sqlite-mode-extras-backtab-dwim
+  "f" #'sqlite-mode-extras-tab-dwim
+  "+" #'sqlite-mode-extras-add-row
+  "D" #'sqlite-mode-extras-delete-row-dwim
+  "C" #'sqlite-mode-extras-compose-and-execute
+  "E" #'sqlite-mode-extras-execute
+  "S" #'sqlite-mode-extras-execute-and-display-select-query
+  "DEL" #'sqlite-mode-extras-delete-row-dwim
+  "g" #'sqlite-mode-extras-refresh
+  "<backtab>" #'sqlite-mode-extras-backtab-dwim
+  "<tab>" #'sqlite-mode-extras-tab-dwim
+  "RET" #'sqlite-mode-extras-ret-dwim)
+
+(define-minor-mode sqlite-extras-minor-mode
+  "Enable bindings for SQLite Extras."
+  :keymap sqlite-extras-minor-mode-map
+  :interactive (sqlite-mode)
+  (when (and sqlite-extras-minor-mode
+             (not (derived-mode-p 'sqlite-mode)))
+    (setq-local sqlite-extras-minor-mode nil)))
+
 (provide 'sqlite-mode-extras)
 ;;; sqlite-mode-extras.el ends here
