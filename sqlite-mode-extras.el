@@ -57,6 +57,12 @@
 (require 'sqlite-mode)
 (require 'view)
 
+(defcustom sqlite-mode-extras-auto-complete-enabled t
+  "Enable value lookup on database column.
+May cause performance issues on large tables."
+  :type 'boolean
+  :group 'sqlite-mode-extras-group)
+
 (defun sqlite-mode-extras-execute ()
   "Execute a query."
   (interactive)
@@ -128,6 +134,16 @@
       (message instructions))
     (pop-to-buffer buffer-name)))
 
+(defun sqlite-mode-extras-completing-read-field (table column)
+  "Do a grouped select to get some completion candidates.
+Takes TABLE to query and COLUMN to select from for completions."
+  (delq nil (flatten-tree (sqlite-execute
+                           sqlite--db
+                           (format "SELECT %s FROM %s GROUP BY %s limit 100"
+                                   column
+                                   table
+                                   column)))))
+
 (defun sqlite-mode-extras-edit-row-field ()
   "Edit current row's field."
   (interactive)
@@ -139,6 +155,16 @@
               (value (if (numberp (sqlite-mode-extras--row-field-value-at-point))
                          (read-number (format "%s: " column)
                                       (sqlite-mode-extras--row-field-value-at-point))
+                       (if sqlite-mode-extras-auto-complete-enabled
+                           (let ((completions (sqlite-mode-extras-completing-read-field (cdr table) column )))
+                             (completing-read (format "%s: " column)
+                                              completions
+                                              nil
+                                              nil
+                                              (sqlite-mode-extras--row-field-value-at-point)))
+                         (read-string (format "%s: " column)
+                                      (sqlite-mode-extras--row-field-value-at-point)))
+
                        (read-string (format "%s: " column)
                                     (sqlite-mode-extras--row-field-value-at-point)))))
     (unless (string-equal (car (seq-first columns)) "id")
@@ -485,15 +511,15 @@ Set REMOVE to remove query and results."
         (save-excursion
           (forward-line)
           (setq pos (line-beginning-position)))
-        (save-excursion
-          (while (and (not pos) (not (bobp)))
-            (when (and (thing-at-point 'line)
-                       (eq 'header-line
-                           (get-text-property 0 'face
-                                              (replace-regexp-in-string
-                                               "\\s-" "" (thing-at-point 'line)))))
-              (setq pos (line-beginning-position)))
-            (forward-line -1))))
+      (save-excursion
+        (while (and (not pos) (not (bobp)))
+          (when (and (thing-at-point 'line)
+                     (eq 'header-line
+                         (get-text-property 0 'face
+                                            (replace-regexp-in-string
+                                             "\\s-" "" (thing-at-point 'line)))))
+            (setq pos (line-beginning-position)))
+          (forward-line -1))))
     (unless pos
       (user-error "No table header found"))
     pos))
