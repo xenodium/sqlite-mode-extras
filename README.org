@@ -105,10 +105,10 @@ Install from MELPA and enable default bindings via =sqlite-extras-minor-mode=.
                        comint-mode-map
                        nil nil (command-remapping 'comint-next-input))
                       (where-is-internal
-                       symbol chatgpt-shell-mode-map nil nil (command-remapping symbol))
+                       symbol sqlite-extras-minor-mode-map nil nil (command-remapping symbol))
                       (where-is-internal
                        (symbol-function symbol)
-                       chatgpt-shell-mode-map nil nil (command-remapping symbol)))))  " or ")
+                       sqlite-extras-minor-mode-map nil nil (command-remapping symbol)))))  " or ")
                  ,(symbol-name symbol)
                  ,(car
                    (split-string
@@ -119,18 +119,19 @@ Install from MELPA and enable default bindings via =sqlite-extras-minor-mode=.
 #+END_SRC
 
 #+RESULTS:
-| Binding | Command                                             | Description                                       |
-|---------+-----------------------------------------------------+---------------------------------------------------|
-|         | sqlite-mode-extras-refresh                          | Refresh all listings and table queries.           |
-|         | sqlite-mode-extras-execute                          | Execute a query.                                  |
-|         | sqlite-mode-extras-compose-and-execute              | Compose and execute a query.                      |
-|         | sqlite-mode-extras-execute-and-display-select-query | Execute a SELECT QUERY.                           |
-|         | sqlite-mode-extras-edit-row-field                   | Edit current row's field.                         |
-|         | sqlite-mode-extras-next-column                      | Navigate to next column.                          |
-|         | sqlite-mode-extras-add-row                          | Add a row to current table.                       |
-|         | sqlite-mode-extras-delete-row-dwim                  | Delete current row or rows in region.             |
-|         | sqlite-mode-extras-backtab-dwim                     | Like `sqlite-mode-extras-tab-dwim' but backwards. |
-|         | sqlite-mode-extras-ret-dwim                         | DWIM binding for RET.                             |
-|         | sqlite-mode-extras-tab-dwim                         | DWIM binding for TAB.                             |
+| Binding        | Command                                             | Description                                       |
+|----------------+-----------------------------------------------------+---------------------------------------------------|
+| g              | sqlite-mode-extras-refresh                          | Refresh all listings and table queries.           |
+| E              | sqlite-mode-extras-execute                          | Execute a query.                                  |
+| C              | sqlite-mode-extras-compose-and-execute              | Compose and execute a query.                      |
+| S              | sqlite-mode-extras-execute-and-display-select-query | Execute a SELECT QUERY.                           |
+|                | sqlite-mode-extras-edit-row-field                   | Edit current row's field.                         |
+|                | sqlite-mode-extras-next-column                      | Navigate to next column.                          |
+|                | sqlite-mode-extras-mode                             |                                                   |
+| +              | sqlite-mode-extras-add-row                          | Add a row to current table.                       |
+| DEL or D       | sqlite-mode-extras-delete-row-dwim                  | Delete current row or rows in region.             |
+| <backtab> or b | sqlite-mode-extras-backtab-dwim                     | Like `sqlite-mode-extras-tab-dwim' but backwards. |
+| RET            | sqlite-mode-extras-ret-dwim                         | DWIM binding for RET.                             |
+| <tab> or f     | sqlite-mode-extras-tab-dwim                         | DWIM binding for TAB.                             |
 
 👉 Find this useful? [[https://github.com/sponsors/xenodium][Support this work via GitHub Sponsors]]
