@@ -12,26 +12,12 @@ Having said that, I want to be upfront that I haven't tested the code thoroughly
 
 * Recommended bindings and installation
 
-Once the package is on MELPA, you'll be able to install via:
+Install from MELPA and enable default bindings via =sqlite-extras-minor-mode=.
 
 #+begin_src emacs-lisp :lexical no
   (use-package sqlite-mode-extras
-    :bind (:map
-           sqlite-mode-map
-           ("n" . next-line)
-           ("p" . previous-line)
-           ("b" . sqlite-mode-extras-backtab-dwim)
-           ("f" . sqlite-mode-extras-tab-dwim)
-           ("+" . sqlite-mode-extras-add-row)
-           ("D" . sqlite-mode-extras-delete-row-dwim)
-           ("C" . sqlite-mode-extras-compose-and-execute)
-           ("E" . sqlite-mode-extras-execute)
-           ("S" . sqlite-mode-extras-execute-and-display-select-query)
-           ("DEL" . sqlite-mode-extras-delete-row-dwim)
-           ("g" . sqlite-mode-extras-refresh)
-           ("<backtab>" . sqlite-mode-extras-backtab-dwim)
-           ("<tab>" . sqlite-mode-extras-tab-dwim)
-           ("RET" . sqlite-mode-extras-ret-dwim)))
+    :ensure t
+    :hook ((sqlite-mode . sqlite-extras-minor-mode)))
 #+end_src
 
 * What kind of extras?
@@ -72,6 +58,79 @@ Once the package is on MELPA, you'll be able to install via:
 #+ATTR_HTML: :width 90%
 [[file:images/select-earth.gif]]
 
-I've been playing with the following key bindings:
+* Customizations
+
+#+BEGIN_SRC emacs-lisp :results table :colnames '("Custom variable" "Description") :exports results
+  (let ((rows))
+    (mapatoms
+     (lambda (symbol)
+       (when (and (string-match "^sqlite-mode-extras"
+                                (symbol-name symbol))
+                  (custom-variable-p symbol))
+         (push `(,symbol
+                 ,(car
+                   (split-string
+                    (or (get (indirect-variable symbol)
+                             'variable-documentation)
+                        (get symbol 'variable-documentation)
+                        "")
+                    "\n")))
+               rows))))
+    rows)
+#+END_SRC
+
+#+RESULTS:
+| Custom variable                          | Description                             |
+|------------------------------------------+-----------------------------------------|
+| sqlite-mode-extras-auto-complete-enabled | Enable value lookup on database column. |
+
+* Commands
+#+BEGIN_SRC emacs-lisp :results table :colnames '("Binding" "Command" "Description") :exports results
+  (let ((rows))
+    (mapatoms
+     (lambda (symbol)
+       (when (and (string-match "^sqlite-mode-extras"
+                                (symbol-name symbol))
+                  (commandp symbol))
+         (push `(,(string-join
+                   (seq-filter
+                    (lambda (symbol)
+                      (not (string-match "menu" symbol)))
+                    (mapcar
+                     (lambda (keys)
+                       (key-description keys))
+                     (or
+                      (where-is-internal
+                       (symbol-function symbol)
+                       comint-mode-map
+                       nil nil (command-remapping 'comint-next-input))
+                      (where-is-internal
+                       symbol chatgpt-shell-mode-map nil nil (command-remapping symbol))
+                      (where-is-internal
+                       (symbol-function symbol)
+                       chatgpt-shell-mode-map nil nil (command-remapping symbol)))))  " or ")
+                 ,(symbol-name symbol)
+                 ,(car
+                   (split-string
+                    (or (documentation symbol t) "")
+                    "\n")))
+               rows))))
+    rows)
+#+END_SRC
+
+#+RESULTS:
+| Binding | Command                                             | Description                                       |
+|---------+-----------------------------------------------------+---------------------------------------------------|
+|         | sqlite-mode-extras-refresh                          | Refresh all listings and table queries.           |
+|         | sqlite-mode-extras-execute                          | Execute a query.                                  |
+|         | sqlite-mode-extras-compose-and-execute              | Compose and execute a query.                      |
+|         | sqlite-mode-extras-execute-and-display-select-query | Execute a SELECT QUERY.                           |
+|         | sqlite-mode-extras-edit-row-field                   | Edit current row's field.                         |
+|         | sqlite-mode-extras-next-column                      | Navigate to next column.                          |
+|         | sqlite-mode-extras-add-row                          | Add a row to current table.                       |
+|         | sqlite-mode-extras-delete-row-dwim                  | Delete current row or rows in region.             |
+|         | sqlite-mode-extras-backtab-dwim                     | Like `sqlite-mode-extras-tab-dwim' but backwards. |
+|         | sqlite-mode-extras-ret-dwim                         | DWIM binding for RET.                             |
+|         | sqlite-mode-extras-tab-dwim                         | DWIM binding for TAB.                             |
 
 👉 Find this useful? [[https://github.com/sponsors/xenodium][Support this work via GitHub Sponsors]]
