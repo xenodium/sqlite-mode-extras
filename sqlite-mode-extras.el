@@ -168,7 +168,7 @@ Takes TABLE to query and COLUMN to select from for completions."
                        (read-string (format "%s: " column)
                                     (sqlite-mode-extras--row-field-value-at-point)))))
     (unless (string-equal (car (seq-first columns)) "id")
-      (error "First row must be 'id'"))
+      (error "First column must be 'id'"))
     (sqlite-execute
      sqlite--db
      (format "UPDATE %s SET %s = ? WHERE rowid = ?"
@@ -202,7 +202,7 @@ Takes TABLE to query and COLUMN to select from for completions."
                      (columns (sqlite-mode-extras--table-header-column-details
                                (sqlite-mode-extras--table-header-line))))
            (unless (string-equal (car (seq-first columns)) "id")
-             (error "First row must be 'id'"))
+             (error "First column must be 'id'"))
            (unless (yes-or-no-p (format "Delete from '%s' rowid = %s?"
                                         (sqlite-mode-extras--assert-table-name (cdr table))
                                         rowids))
